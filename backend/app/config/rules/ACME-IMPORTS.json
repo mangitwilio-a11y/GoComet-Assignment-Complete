@@ -1,0 +1,59 @@
+{
+  "customer_id": "ACME-IMPORTS",
+  "customer_name": "Acme Imports Ltd.",
+  "description": "Per-customer validation rule set. This file IS the product surface: the three agents are generic, this config is what makes the pipeline customer-specific. One engine, many configs.",
+  "rules": {
+    "consignee_name": {
+      "type": "exact_or_semantic",
+      "expected": "Acme Imports Ltd.",
+      "semantic_ok": true,
+      "note": "Allow minor variants (Acme Imports Limited, ACME IMPORTS LTD) via semantic match."
+    },
+    "hs_code": {
+      "type": "regex_and_allowlist",
+      "pattern": "^\\d{4}\\.\\d{2}(\\.\\d{2})?$",
+      "allowlist": ["8471.30", "8471.30.01", "8517.62", "8523.51"],
+      "note": "Must be valid HS format AND one of Acme's contracted commodity codes."
+    },
+    "port_of_loading": {
+      "type": "allowlist_semantic",
+      "allowlist": ["Shanghai", "Ningbo", "Shenzhen"],
+      "semantic_ok": true,
+      "note": "Acme only sources from these CN ports. Semantic match tolerates 'Port of Shanghai, CN'."
+    },
+    "port_of_discharge": {
+      "type": "allowlist_semantic",
+      "allowlist": ["Rotterdam", "Hamburg"],
+      "semantic_ok": true
+    },
+    "incoterms": {
+      "type": "allowlist",
+      "allowlist": ["FOB", "CIF"],
+      "note": "Acme contracts are FOB or CIF only. Anything else is a mismatch requiring amendment."
+    },
+    "description_of_goods": {
+      "type": "must_contain_any_semantic",
+      "keywords": ["laptop", "notebook computer", "portable computer", "data processing machine"],
+      "semantic_ok": true,
+      "note": "Goods must be consistent with the contracted HS codes (computers)."
+    },
+    "gross_weight": {
+      "type": "numeric_tolerance",
+      "expected_value": 12500,
+      "unit": "kg",
+      "tolerance_pct": 5,
+      "note": "Expected container weight ~12500kg, accept +/-5%."
+    },
+    "invoice_number": {
+      "type": "regex",
+      "pattern": "^INV-\\d{4}-\\d{4,6}$",
+      "note": "Acme PO references follow INV-YYYY-NNNN."
+    }
+  },
+  "routing_policy": {
+    "min_field_confidence": 0.6,
+    "auto_approve_requires": "all fields match AND every field confidence >= min_field_confidence",
+    "amendment_when": "one or more deterministic mismatches (wrong value, fixable by supplier)",
+    "human_review_when": "any uncertain field, ungrounded value (no source_quote), or confidence below threshold"
+  }
+}

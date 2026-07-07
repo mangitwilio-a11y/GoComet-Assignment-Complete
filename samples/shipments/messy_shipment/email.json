@@ -1,0 +1,6 @@
+{
+  "from": "dispatch@shenzhen-tech.example",
+  "subject": "Shipment INV-2024-0101 \u2014 corrected docs for ACME",
+  "customer": "ACME-IMPORTS",
+  "body": "Hi CG team, resending the full set after your last note. Everything should be fine now. \u2014 SU"
+}

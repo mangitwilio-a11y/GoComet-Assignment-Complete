@@ -1,0 +1,6 @@
+{
+  "from": "dispatch@shenzhen-tech.example",
+  "subject": "Shipment INV-2024-0101 \u2014 docs for ACME (BOL + CI + PL)",
+  "customer": "ACME-IMPORTS",
+  "body": "Hi CG team, please find attached the document set for the laptop shipment on MV NORDIC STAR. Kindly confirm so we can dispatch. \u2014 SU"
+}
